@@ -46,10 +46,3 @@ set :branch, "main"
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
-
-
-
-set :rbenv_ruby, File.read('.ruby-version').strip
-set :rbenv_path, "/home/hpubs/.rbenv"
-
-set :asset_roles, [:web, :app]

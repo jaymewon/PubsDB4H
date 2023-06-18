@@ -31,9 +31,6 @@
 # http://capistranorb.com/documentation/getting-started/configuration/
 # Feel free to add new variables to customise your setup.
 
-set :deploy_to, -> {"/home/hpubs/PubsDB4H_production "}
-set :http_port, 3100
-
 # Custom SSH Options
 # ==================
 # You may pass any option but keep in mind that net/ssh understands a
@@ -60,8 +57,5 @@ set :http_port, 3100
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
-
-ask(:password, "#{fetch(:application)}'s password: ", echo: false)
-server 'nisse.ag.ndsu.nodak.edu', user:     'hpubs',
-                                  password: fetch(:password),
-                                  roles:    %w{ web, app, db }
+server "nisse.ag.ndsu.nodak.edu", user: "pubsdb4h", roles: %w{app db web}
+set :http_port, 3100
