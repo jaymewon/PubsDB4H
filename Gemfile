@@ -30,6 +30,8 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem "thin"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
@@ -67,8 +69,8 @@ group :development do
   # gem "spring"
 
   gem "capistrano", require: false
-  gem "capistrano-rails"
   gem "capistrano-rbenv"
+  gem "capistrano-rails"
   gem "capistrano-bundler"
 end
 
