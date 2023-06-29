@@ -6,8 +6,8 @@ ActiveAdmin.register Publication do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  permit_params :title, :pub_number, :contact_id, :location, :expiration, :cost, :quantity_on_hand, :pub_num_prefix_id, :status_id, 
-                :unit_id, :availability_id, :designer_id, :first_category_id, :second_category_id, :third_category_id, author_ids: []
+  permit_params :title, :pub_number, :contact_id, :location, :expiration, :cost, :pub_num_prefix_id, :status_id, 
+                :unit_id, :availability_id, :designer_id, :first_category_id, :second_category_id, :third_category_id, origination_ids: []
   #
   # or
   #
@@ -24,10 +24,10 @@ ActiveAdmin.register Publication do
     column  'Pub #', :pub_number
     column  :title
     column  :code
-    column  '1st Category', :first_category
-    column  '2nd Category', :second_category
-    column  '3rd Category', :third_category
-    column  :contact
+    column  '1st Category',   :first_category
+    column  '2nd Category',   :second_category
+    column  '3rd Category',   :third_category
+    column  'Contact/Author', :contact
     column  :expiration
     column  :status do |pub|
       status_tag pub.pub_status
@@ -42,15 +42,14 @@ ActiveAdmin.register Publication do
 
   preserve_default_filters!
 
-  filter  :authors, collection: -> {
+  filter  :originations, collection: -> {
     Person.preload(:publications_as_contact).select { |person| not person.publications_as_contact.empty? }
   }
 
   remove_filter :created_at
   remove_filter :location
-  remove_filter :publication_authors
-  remove_filter :quantity_on_hand
-
+  remove_filter :publication_originations
+  
   form do |f|
     f.semantic_errors
 
@@ -62,20 +61,19 @@ ActiveAdmin.register Publication do
         f.input :pub_number
       end
       f.input :title
-      f.input :first_category
-      f.input :second_category
-      f.input :third_category
-      f.input :authors
+      f.input :first_category, label: '1st Category'
+      f.input :second_category, label: '2nd Category'
+      f.input :third_category, label: '3rd Category'
+      f.input :originations
+      f.input :contact, label: 'Contact/Author'
       f.input :location
       f.input :status
       f.input :unit
       f.input :code
-      f.input :contact
       f.input :expiration, :as => :date_select, end_year: Time.now.year+10
       f.input :availability
       f.input :designer
       f.input :cost
-      f.input :quantity_on_hand
     end
     f.actions
   end
@@ -85,21 +83,21 @@ ActiveAdmin.register Publication do
       row :pub_num_prefix
       row :pub_number
       row :title
-      row :first_category
-      row :second_category
-      row :third_category
-      row :authors
+      row("1st Category") { |r| r.first_category}
+      row("2nd Category") { |r| r.second_category}
+      row("3rd Category") { |r| r.third_category}
+      row :originations
+      row("Contact/Author") { |r| r.contact}
       row :location
       row :status do |pub|
         status_tag pub.pub_status
       end
       row :unit 
-      row :contact
+      row :code 
       row :expiration
       row :availability
       row :designer
       row :cost
-      row :quantity_on_hand
       row :created_at
       row :updated_at 
     end
@@ -114,6 +112,5 @@ ActiveAdmin.register Publication do
     column( :contact ) {|pub| pub.contact.nil? ? "None" : pub.contact.name}
     column :expiration
     column( :availability ) {|pub| pub.availability.nil? ? "unknown" : pub.availability.name}
-    column :quantity_on_hand
   end
 end

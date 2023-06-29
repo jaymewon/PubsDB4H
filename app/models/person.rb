@@ -1,8 +1,8 @@
 class Person < ApplicationRecord
     default_scope {order(:last_name, :first_name)}
 
-    has_many    :publication_authors
-    has_many    :publications, through: :publication_authors
+    has_many    :publication_originations
+    has_many    :publications, through: :publication_originations
 
     has_many    :publications_as_contact, class_name: 'Publication', foreign_key: 'contact_id'
 

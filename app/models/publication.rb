@@ -10,8 +10,8 @@ class Publication < ApplicationRecord
     belongs_to  :second_category, optional: true
     belongs_to  :third_category, optional: true
 
-    has_many    :publication_authors, dependent: :destroy
-    has_many    :authors, through: :publication_authors, source: :person
+    has_many    :publication_originations, dependent: :destroy
+    has_many    :originations, through: :publication_originations, source: :person
     
     scope   :all_pubs,  ->  { order( created_at: :desc ) }
     scope   :active,  ->  { where.not( status_id: Status::ARCHIVED ) }

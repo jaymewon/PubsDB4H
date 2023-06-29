@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_09_141125) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_29_141806) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -80,13 +80,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_141125) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "publication_authors", force: :cascade do |t|
+  create_table "publication_originations", force: :cascade do |t|
     t.bigint "publication_id", null: false
     t.bigint "person_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_publication_authors_on_person_id"
-    t.index ["publication_id"], name: "index_publication_authors_on_publication_id"
+    t.index ["person_id"], name: "index_publication_originations_on_person_id"
+    t.index ["publication_id"], name: "index_publication_originations_on_publication_id"
   end
 
   create_table "publications", force: :cascade do |t|
@@ -96,7 +96,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_141125) do
     t.string "location", limit: 240
     t.date "expiration"
     t.float "cost"
-    t.integer "quantity_on_hand"
     t.bigint "pub_num_prefix_id", null: false
     t.bigint "status_id"
     t.bigint "unit_id", null: false
@@ -105,8 +104,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_141125) do
     t.bigint "first_category_id", null: false
     t.bigint "second_category_id"
     t.bigint "third_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", default: -> { "now()" }, null: false
+    t.datetime "updated_at", default: -> { "now()" }, null: false
     t.bigint "code_id"
     t.index ["availability_id"], name: "index_publications_on_availability_id"
     t.index ["code_id"], name: "index_publications_on_code_id"
@@ -150,8 +149,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_09_141125) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "publication_authors", "people"
-  add_foreign_key "publication_authors", "publications"
+  add_foreign_key "publication_originations", "people"
+  add_foreign_key "publication_originations", "publications"
   add_foreign_key "publications", "availabilities"
   add_foreign_key "publications", "codes"
   add_foreign_key "publications", "designers"
